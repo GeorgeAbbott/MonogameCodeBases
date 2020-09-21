@@ -11,8 +11,8 @@ namespace Collection_of_Useful_Code_Bases__Some_Monogame_
 {
     partial class Menu
     {
-        private int ItemWidth { get; }
-        private int ItemHeight { get; }
+        public int ItemWidth { get; }
+        public int ItemHeight { get; }
 
         // Note: Selection use a zero index
         private int FirstSelection { get { return 0; } }
@@ -28,7 +28,7 @@ namespace Collection_of_Useful_Code_Bases__Some_Monogame_
         }
         private bool IsSelectionMade { get; set; }
 
-        private Vector2 Coordinates { get; }
+        private Vector2 Coordinates { get; } // Top left coordinates
         private Texture2D Background { get; set; }
 
         /// <param name="width">The entries needed widthwise for all Entries.</param>
@@ -59,7 +59,9 @@ namespace Collection_of_Useful_Code_Bases__Some_Monogame_
 
         public void AddNewEntry(MenuEntry entry)
         {
-            if (CurrentPage.IsFull) AddNewEmptyPage();
+            if (CurrentPage.IsFull) AddNewEmptyPage(selectNewPage: true);
+
+            CurrentPage.AddMenuEntry(entry);
 
         }
 
@@ -71,11 +73,22 @@ namespace Collection_of_Useful_Code_Bases__Some_Monogame_
 
             Menu o_; // Used to access variables from Menu
 
-            private List<MenuEntry> entries;
+            private List<MenuEntry> Entries { get; set; }
+
+            public int PageWidth { get { return o_.ItemWidth; } }
 
             public bool IsFull
             {
-                get { return entries.Count >= o_.ItemWidth; }
+                get { return Entries.Count >= o_.ItemWidth; }
+            }
+
+            public void AddMenuEntry(MenuEntry menuEntry)
+            {
+                if (menuEntry.Width != PageWidth)
+                    throw new ArgumentException($"menuEntry does not have the correct width of {o_.ItemWidth}");
+
+                if (!IsFull) Entries.Add(menuEntry);
+
             }
 
             
@@ -91,7 +104,24 @@ namespace Collection_of_Useful_Code_Bases__Some_Monogame_
         }
     }
 
-    class MenuEntry { }
+    class MenuEntry
+    {
+        public int Width;
+
+        private List<IMenuComponent> components;
+
+        public MenuEntry(Menu o_)
+        {
+            Width = o_.ItemWidth;
+        }
+
+
+    }
+
+    interface IMenuComponent
+    {
+
+    }
 
 }
 
@@ -102,7 +132,7 @@ namespace Collection_of_Useful_Code_Bases__Some_Monogame_
  *  YES - have a background
  *  YES - have a coordinate
  *  YES - have a current selection, and likewise current page
- *  - have position of each item either
+ *  NEXTTODO - have position of each item either
  *      - calculated with a regular offset from the previous entry, or from the topleft
  *      - have the position overtly specified for the entry
  *  - be either an Image or Text
