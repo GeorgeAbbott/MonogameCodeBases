@@ -120,7 +120,7 @@ namespace Collection_of_Useful_Code_Bases__Some_Monogame_
 
     interface IMenuComponent
     {
-
+        void Draw();
     }
 
 }
