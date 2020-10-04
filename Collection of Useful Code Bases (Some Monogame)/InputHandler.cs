@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 
-namespace Class_War
+namespace Collection_of_Useful_Code_Bases__Some_Monogame_
 {
     class InputHandler
     {

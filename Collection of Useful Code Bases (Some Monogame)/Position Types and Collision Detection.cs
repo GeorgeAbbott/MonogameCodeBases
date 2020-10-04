@@ -141,6 +141,11 @@ namespace Collection_of_Useful_Code_Bases__Some_Monogame_
             return rhs.TopLeft;
         }
 
+        public static implicit operator Position(Vector2 rhs)
+        { // Convert Vector2 into position; Width and Height are given as 0.
+            return new Position(rhs.X, rhs.Y, 0, 0);
+        }
+
 
         public override string ToString()
         {
